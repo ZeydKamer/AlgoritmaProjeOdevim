@@ -1,4 +1,6 @@
 # AlgoritmaProjeOdevim
+# Ön Bilgi
+- Ben bu kodu Dev-C++ 5.11 C programı ile yazdım. Başka bir program kullanacaksanız hatalar verebilir ve kodun çalışmasını görebilmek için düzenlemeniz gerekmektedir.
 ## Program Hakkında Genel Bilgiler
 - Yazdığım şifreleme programı girdiğiniz tam sayı Kadar girdiğiniz metni ileri ya da geriye doğru ötelemektedir.
 - Programı çalıştırdığınızda 3 adet seçenek göreceksiniz Şifreleme, Deşifreleme ve Programı Sonlandırma seçenekleridir.
