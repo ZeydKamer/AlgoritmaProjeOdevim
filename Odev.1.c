@@ -1,175 +1,212 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_METIN_UZUNLUK 100
+
 void sifrele(char metin[], int oteleme) {
-    unsigned int uzunluk = strlen(metin);	// Dizinin Uzunluðunu tutacaðýmýz deðer
+    unsigned int uzunluk = strlen(metin);	// Dizinin UzunluÄŸunu tutacaÄŸÄ±mÄ±z deÄŸer
 	
-	// Þifreleme Bölümü
-    int i;
+	int i;
     for (i = 0; i < uzunluk; i++) {
         if (metin[i] >= 'a' && metin[i] <= 'z') {
             metin[i] = 'a' + ((metin[i] - 'a' + oteleme % 26) + 26) % 26;
-        }	// Eðer harf küçükse if bölümü, eðer harf büyükse else if bölümü kullanýlacak  
-		else if (metin[i] >= 'A' && metin[i] <= 'Z') {
+        }	// EÄŸer harf kÃ¼Ã§Ã¼kse if bÃ¶lÃ¼mÃ¼, eÄŸer harf bÃ¼yÃ¼kse else if bÃ¶lÃ¼mÃ¼ kullanÄ±lacak 
+	else if (metin[i] >= 'A' && metin[i] <= 'Z') {
             metin[i] = 'A' + ((metin[i] - 'A' + oteleme % 26) + 26) % 26;
         }
     }
 }
 
 void sifreCoz(char metin[], int geriyeoteleme) {
-    sifrele(metin, -geriyeoteleme);	// Þifre çözme algoritmasýnýn negatif hali
+    sifrele(metin, -geriyeoteleme);	// Åžifre Ã§Ã¶zme algoritmasÄ±nÄ±n negatif hali
 }
 
-// Dosyaya yazma veya dosyaya okuma bölümü
-char dosyaIslemleri(char metin[]) {
+// Dosyaya yazma veya dosyaya okuma bÃ¶lÃ¼mÃ¼
+int dosyaIslemleri(char metin[]) {
     FILE *dosya;
     int cevap;
 
-    printf("Dosya olusturup okutmak icin : 1\nDosyayi okutmak icin : Herhangi Bir Tusa Basin \n");
-    scanf("%d", &cevap);
+    printf("Dosya olusturup okutmak icin: 1\nDosyayi okutmak icin: 0'a basiniz\n");
 
-    if (cevap == 1) {	// Cevaba göre okuyup yazma
-        dosya = fopen("dosya.txt", "w");
+    while (1) {
+        if (scanf("%d", &cevap) != 1) {
+            printf("Gecersiz giris. Lutfen 1 veya 0 tusuna basiniz.\n");
+            while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+            continue;
+        }
+
+        if (cevap == 1) {	// Cevaba gÃ¶re okuyup yazma
+            dosya = fopen("dosya.txt", "w");
+
+            if (dosya == NULL) {	// DosyanÄ±n doÄŸruluÄŸunu kontrol etme
+                printf("Dosya acilamadi\n");
+                return 0;
+            }
+
+            printf("Lutfen dosyanin icerigini giriniz\n");
+            scanf("%s", metin);			// KullanÄ±cÄ±dan metni alma
+            fprintf(dosya, "%s", metin);	// AlÄ±nan metni dosyaya yazdÄ±rma
+            fclose(dosya);			// DosyayÄ± kapatma
+        }
+
+        dosya = fopen("dosya.txt", "r");	// Okuma iÅŸlemi iÃ§in dosyayÄ± aÃ§ma
 
         if (dosya == NULL) {
-            printf("Dosya acilamadi\n");	// Dosyanýn doðruluðunu kontrol etme
-            return 1;
+            printf("Dosya bulunamadi\n");
+            return 0;
         }
 
-        printf("Lutfen dosyanin icerigini giriniz\n");
-        scanf("%s", metin);					// Kullanýcýdan metni alma
-        fprintf(dosya, "%s", metin);		// Alýnan metni dosyaya yazdýrma
-        fclose(dosya);						// Dosyayý kapatma
+        fscanf(dosya, "%s", metin);		// DosyayÄ± okuma ve metin'e atma
+        fclose(dosya);
+
+        return 1;
     }
-
-    dosya = fopen("dosya.txt", "r");		// Okuma iþlemi için dosyayý açma
-
-    if (dosya == NULL) {
-        printf("Dosya bulunamadi\n");
-        return 2;
-    }
-
-    fscanf(dosya, "%s", metin);		// Dosyayý okuma ve metin'e atma
-    fclose(dosya);
-
-    return 0;
 }
 
-char sifreCozmeIslemi() {
+int sifreCozmeIslemi() {
     int otelememiktari, cevap;
-    char metin[100];
+    char metin[MAX_METIN_UZUNLUK];
 
-    printf("Islemi Dosya ile Yapacaksaniz 1\nYapmayacaksaniz Herhangi Bir Tusa Basin\n");
-    scanf("%d", &cevap);			//Kullanýcýnýn dosyayla mý yoksa normal yolla mý iþlem yapacaðýný sorgulama
+    printf("Islemi Dosya ile Yapacaksaniz 1\nYapmayacaksaniz 0'a basiniz\n");	//KullanÄ±cÄ±nÄ±n dosyayla mÄ± yoksa normal yolla mÄ± iÅŸlem yapacaÄŸÄ±nÄ± sorgulama
 
-    if (cevap == 1) {
-        dosyaIslemleri(metin);
-
-        if (strlen(metin) == 0) {	//Dosyayla yapýlacak iþlemde dosya bulunamadýysa sonlandýrma
-            return 1;
+    while (1) {
+        if (scanf("%d", &cevap) != 1) {
+            printf("Gecersiz giris. Lutfen 1 veya 0 tusuna basiniz.\n");
+            while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+            continue;
         }
-    } else {
-        printf("Lutfen Kirilacak Sifreyi Girin\nSifrenin Max Uzunlugu 100 Karakter Olmalidir\n");	// Normal yolla yapýlacak iþlem için kullanýcýdan þifre alma 
 
-        tekrariste:
-        scanf("%s", metin);
+        if (cevap == 1) {
+            dosyaIslemleri(metin);
 
-        if (strlen(metin) > 100) {		// Girilen þifre 100 karakterden uzunsa þifreyi tekrar isteme
-            printf("Sifre 100 Karakterden Buyuk Olamaz\n");
-            goto tekrariste;
+            if (strlen(metin) == 0) {		//Dosyayla yapÄ±lacak iÅŸlemde dosya bulunamadÄ±ysa sonlandÄ±rma
+                return 1;
+            }
+        } else {
+            printf("Lutfen Kirilacak Sifreyi Girin\nSifrenin Max Uzunlugu 100 Karakter Olmalidir\n");	// Normal yolla yapÄ±lacak iÅŸlem iÃ§in kullanÄ±cÄ±dan ÅŸifre alma 
+
+            while (1) {
+                if (scanf("%99[^\n]", metin) != 1) {
+                    printf("Gecersiz giris. Lutfen tekrar deneyin.\n");
+                    while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+                    continue;
+                }
+
+                if (strlen(metin) > MAX_METIN_UZUNLUK) {	// Girilen ÅŸifre MAX_METIN_UZUNLUK'tan uzunsa ÅŸifreyi tekrar isteme
+                    printf("Metin %d karakterden buyuk olamaz\n", MAX_METIN_UZUNLUK);
+                    continue;
+                }
+
+                break;
+            }
         }
+
+        printf("Lutfen Geri Oteleme Miktarini Giriniz\n");
+
+        while (1) {
+            if (scanf("%d", &otelememiktari) != 1) {		// KullanÄ±cÄ±dan ne kadar Ã¶teleme yapÄ±lacaksa o miktarÄ± almak ve girilenin sayÄ± olup olmadÄ±ÄŸÄ±nÄ± kontrol etme 
+                printf("Gecersiz giris. Lutfen sayi giriniz\n");
+                while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+                continue;
+            }
+
+            break;
+        }
+	// AlÄ±nan verileri ÅŸifresini Ã§Ã¶zme iÅŸlemi
+        sifreCoz(metin, otelememiktari);
+        printf("Sifresi cozulen metin: %s\n\n\n", metin);	// Åžifresi Ã§Ã¶zÃ¼len metni yazma
+
+        return 0;
     }
-
-    printf("Lutfen Geri Oteleme Miktarini Giriniz\n");
-
-    tekrarsayiiste:
-    if (scanf("%d", &otelememiktari) != 1) {	// Kullanýcýdan ne kadar öteleme yapýlacaksa o miktarý almak ve girilenin sayý olup olmadýðýný kontrol etme 
-        fflush(stdin);
-        printf("Lutfen Sayi Giriniz\n");
-        goto tekrarsayiiste;
-    }
-	
-	// Alýnan verileri þifresini çözme iþlemi
-    sifreCoz(metin, otelememiktari);
-    printf("Sifresi cozulen metin: %s\n\n\n", metin);	// Þifresi çözülen metni yazma
-
-    return 0;
 }
 
-char sifrelemeIslemi() {	// Þifreleme operasyonuyla ayný iþlemler
-    char metin[100];
+int sifrelemeIslemi() {
+    char metin[MAX_METIN_UZUNLUK];
     int cevap, otelememiktari;
 
-    printf("Islemi dosyayla yapacaksaniz 1\nYapmayacaksaniz farkli bir tusa basiniz\n");
-    scanf("%d", &cevap);
+    printf("Islemi dosyayla yapacaksaniz 1\nYapmayacaksaniz 0'a basiniz\n");
 
-    if (cevap == 1) {
-        dosyaIslemleri(metin);
-
-        if (strlen(metin) == 0) {
-            return 1;
+    while (1) {
+        if (scanf("%d", &cevap) != 1) {
+            printf("Gecersiz giris. Lutfen 1 veya 0 tusuna basiniz.\n");
+            while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+            continue;
         }
-    } else {
-        printf("Lutfen sifrelenecek olan metni giriniz\n");
 
-        tekrariste:
-        scanf("%s", metin);
+        if (cevap == 1) {
+            dosyaIslemleri(metin);
 
-        if (strlen(metin) > 100) {
-            printf("Metin 100 Karakterden Buyuk Olamaz\n");
-            fflush(stdin);
-            goto tekrariste;
+            if (dosyaIslemleri(metin) == 0) {
+                return 1;
+            }
+        } else {
+            printf("Lutfen sifrelenecek olan metni giriniz\n");
+
+            while (1) {
+                if (scanf("%99[^\n]", metin) != 1) {
+                    printf("Gecersiz giris. Lutfen tekrar deneyin.\n");
+                    while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+                    continue;
+                }
+
+                if (strlen(metin) > MAX_METIN_UZUNLUK) {
+                    printf("Metin %d karakterden buyuk olamaz\n", MAX_METIN_UZUNLUK);
+                    continue;
+                }
+
+                break;		// GeÃ§erli giriÅŸ alÄ±ndÄ±ÄŸÄ±nda dÃ¶ngÃ¼den Ã§Ä±k
+            }
         }
+
+        printf("Lutfen oteleme miktarini giriniz\n");
+
+        while (1) {
+            if (scanf("%d", &otelememiktari) != 1) {
+                printf("Gecersiz giris. Lutfen sayi giriniz\n");
+                while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+                continue;
+            }
+
+            break;		// GeÃ§erli giriÅŸ alÄ±ndÄ±ÄŸÄ±nda dÃ¶ngÃ¼den Ã§Ä±k
+        }
+
+        sifrele(metin, otelememiktari);
+        printf("Sifrelenen metin: %s\n\n", metin);
+
+        return 0;
     }
-
-    printf("Lutfen oteleme miktarini giriniz\n");
-
-    tekrarsayiisteme:
-    if (scanf("%d", &otelememiktari) != 1) {
-        fflush(stdin);
-        printf("Lutfen Sayi Giriniz\n");
-        goto tekrarsayiisteme;
-    }
-
-    sifrele(metin, otelememiktari);
-    printf("Sifrelenen metin: %s\n\n", metin);
-
-    return 0;
 }
 
 int main() {
     int islem;
 
-    printf("Lutfen yapmak istediginiz islemi secin:\n");	// Kullanýcýdan yapmasýný istediði iþlemi seçme
+    printf("Lutfen yapmak istediginiz islemi secin:\n");
 
-    tekrarsor:
-    printf("1=Sifreleme\n"
-           "2=SifreCozme\n"
-           "3=Programi Sonlandirma\n");
+    while (1) {
+        printf("1=Sifreleme\n"
+               "2=SifreCozme\n"
+               "3=Programi Sonlandirma\n");
 
-    if (scanf("%d", &islem) != 1) {		// Girilen deðerin sayý olduðunu kontrol etme
-        printf("Lutfen sadece sayi giriniz (Örnek: 1, 5, 8)\n");
-        fflush(stdin);
-        goto tekrarsor;
+        if (scanf("%d", &islem) != 1) {
+            printf("Lutfen sadece sayi giriniz (Ornek: 1, 2 veya 3)\n");
+            while (getchar() != '\n'); // HatalÄ± giriÅŸi temizle
+            continue;
+        }
+
+        switch (islem) {
+            case 1:
+                sifrelemeIslemi();
+                printf("Lutfen diger islemi seciniz\n");
+                break;
+            case 2:
+                sifreCozmeIslemi();
+                printf("Lutfen diger islemi seciniz\n");
+                break;
+            case 3:
+                return 0;
+            default:
+                printf("Tanimsiz bir islem girdiniz\n\tLutfen tekrar deneyiniz\n");
+                break;
+        }
     }
-	
-	// Kullanýcýnýn seçtiði iþleme göre yapýlacak iþlemi seçme
-    switch (islem) {
-        case 1:
-            sifrelemeIslemi();
-            printf("Lutfen diger islemi seciniz\n");
-            goto tekrarsor;
-        case 2:
-            sifreCozmeIslemi();
-            printf("Lutfen diger islemi seciniz\n");
-            goto tekrarsor;
-        case 3:
-            break;
-        default:
-            printf("Tanimsiz bir islem girdiniz\n\tLutfen tekrar deneyiniz\n");
-            goto tekrarsor;
-    }
-
-    return 0;
 }
-
