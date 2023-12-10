@@ -19,11 +19,13 @@
 - Kendi dosyanızı oluşturmak için main.exe'nin olduğu klasörden kendiniz dosyanızı oluşturabilirsiniz.
 - Kendi oluşturduğunuz farklı isimdeki bir dosyayı okutabilmek için yazdığım kodun içindeki dosyayı ( dosya.txt )'yi kendiniz değiştirebilirsiniz.
 ## Kod İçeriği
+
 #include <stdio.h>
 #include <string.h>
 
+// Dizinin Uzunluğunu tutacağımız değer
 void sifrele(char metin[], int oteleme) {
-    unsigned int uzunluk = strlen(metin);	// Dizinin Uzunluğunu tutacağımız değer
+    unsigned int uzunluk = strlen(metin);	
 	
 	// Şifreleme Bölümü
     int i;
