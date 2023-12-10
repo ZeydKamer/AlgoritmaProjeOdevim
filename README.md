@@ -12,8 +12,7 @@
 - Bu çıktı da sizin girmiş olduğunuz metnin her bir harfinin 4 kez ileriye ötelenmiş halidir.
 - Sifrecozme işlemi metne girdiğiniz sayı kadar alfabe sınırları içerisinde geri öteler.
 - Yani tekrardan anlaşılması açısından yukarıda verdiğim örneği kullanırsak ve şifreyi tekrar anlamlı bir metne dönüştürmek istersek "QivlefeHyrce" metninin her bir harfini 4 kez geri ötelememiz gerekir.
-- Buna göre programda Sifrecozme işlemini seçtiğimizde, "M_no_uyn_ikjsiybew" metnini yazdığımızda ve öteleme miktarını 4 olarak girerseniz kod size "MerhabaDunya" metnini verir.
-- Başka bir örnek olarak
+- Buna göre programda Sifrecozme işlemini seçtiğimizde, "QivlefeHyrce" metnini yazdığımızda ve öteleme miktarını 4 olarak girerseniz kod size "MerhabaDunya" metnini verir.
 ## Dosyaları Okuma ve Yazma
 - Aynı dosya okuma ve yazma işlemleri için hem Sifreleme hem de Sifrecozme işlemleri çalışmaktadır.
 - Eğer ki bir dosyanız yoksa dosya oluşturma seçeneğini seçerek kodunuz için bir 'dosya.txt' dosyası oluşturulacaktır.
